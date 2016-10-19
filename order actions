@@ -1,0 +1,22 @@
+class OrderAdmin(admin.ModelAdmin):
+    list_per_page = 15 #defaults to 100 so kept 15 with pagination
+    actions = ['order_dispatched']
+    
+    def order_dispatched(self, request, queryset):
+        rows_updated = queryset.update(dispatched = True)
+        if rows_updated == 1:
+            message_bit = "1 order was"
+        else:
+            message_bit = "{} orders were".format(rows_updated)
+        
+        self.order_dispatched(request, "{} successfully dispatched".format(message_bit))
+        
+    order_dispatched.short_description = "mark orders as dispatched"
+    
+    def get_actions(self, request):
+        actions = super(OrderAdmin, self).get_actions(request)
+        if request.user:
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+    
