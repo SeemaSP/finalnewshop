@@ -20,3 +20,4 @@ class OrderAdmin(admin.ModelAdmin):
                 del actions['delete_selected']
         return actions
     
+//https://github.com/curran/screencasts/tree/gh-pages/introToAngular
